@@ -188,7 +188,8 @@ let dropZoneDragHandler = function(event) {
   let taskListEl = event.target.closest(".task-list");
   if (taskListEl) {
     event.preventDefault();
-  }
+    taskListEl.setAttribute("style", "background: rgba(68, 233, 255, 0.7); border-style: dashed;");
+  }  
 };
 
 let dropTaskHandler = function(event) {
@@ -207,9 +208,21 @@ let dropTaskHandler = function(event) {
   else if (statusType === "tasks-completed") {
     statusSelectEl.selectedIndex = 2;
   }
+
+  dropZoneEl.removeAttribute("style");
+
   dropZoneEl.appendChild(draggableElement);
 
   console.log("Drop Event Target:", event.target, event.dataTransfer, id);
+};
+
+let dragLeaveHandler = function(event) {
+  let taskListEl = event.target.closest(".task-list");
+  if (taskListEl) {
+    taskListEl.removeAttribute("style");
+  }
+  
+  console.dir(event.target);
 };
 
 // Create a new task
@@ -229,3 +242,6 @@ pageContentEl.addEventListener("dragover", dropZoneDragHandler);
 
 // for drop events
 pageContentEl.addEventListener("drop", dropTaskHandler);
+
+// reset column style when passed over
+pageContentEl.addEventListener("dragleave", dragLeaveHandler);
